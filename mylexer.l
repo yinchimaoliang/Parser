@@ -62,47 +62,13 @@ annotation  ("/*"([^*"]*|".*"|\*+[^/])*\**"*/")|("//".*\n)
 {annotation} {}
 {ws}         {/*no action and no return */}
 {newline}    {my.lineno++;}
-//"/*"         { 
-//               char c;
-//               ANNO:
-//               c=cin.get();
-//               while(c!='*'&&c!='"')
-//                 c=cin.get();
-//               if(c=='"')
-//               {
-//                 do{
-//                     c=cin.get();
-//                     if(c=='\n')
-//                       my.lineno++;
-//                     
-//                    }while(c!='"');
-//                }
-//                if(c=='*'){
-//                do{
-//                   c=cin.get();
-//                   if(c=='/')
-//                      break;
-//                   if(c=='\n')
-//                      my.lineno++;
-//                    if(c!='*')
-//                      goto ANNO;
-//                }while(c=='*');
-//                }
-//              }
-//"//"         {
-//              //µ¥ÐÐ×¢ÊÍ
-//               char c;
-//              do{ 
-//                  c=cin.get();                   
-//                 }while(c!='\n');
-//                 my.lineno++;
-//             }
-//type
 int         {return INT;}
 char        {return CHAR;}
+float		{return FLOAT;}
+double		{return DOUBLE;}
 void        {return VOID;}
 main        {return MAIN;}
-
+return 		{return RETURN;}
 
 //paragraph
 if          {return IF;} 

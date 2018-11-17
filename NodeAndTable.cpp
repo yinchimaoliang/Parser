@@ -75,11 +75,42 @@ int NodeTable::gettype(int pos)
 }
 
 //处理数字，返回数字的值
-int NodeTable::getNumber(char *str)
+double NodeTable::getNumber(char *str)
 {
-       int value=0;
-	   value=atoi(str);
-	   return value;
+	int yyleng = strlen(str);
+       int i=0,flag = 0;
+	   double value=0;
+       for(i=0;i<yyleng;i++)
+       {
+		   //处理负数
+		  if(str[i] == '-')
+		  {
+			  continue;
+		  }
+		  //处理小数
+		  if(str[i] == '.')
+		  {
+			  flag = 1;
+			  break;
+		  }
+          value=value*10+(str[i]-'0'); 
+
+       }
+	   if(flag == 1)
+	   {
+		   int temp = 10;
+		   for(;i<yyleng;i++)
+		   {
+			   i++;
+			   value += double(str[i]-'0')/double(temp);
+			   temp = temp*10;
+		   }
+	   }
+	   if(str[0] == '-')
+	   {
+		   return -value;
+	   }
+       return value;
 }
 
 //分析树定义————
@@ -92,7 +123,7 @@ void NodeTable::shownode(struct TreeNode * p)
   {
     case STMT:
     {
-      string names[8]={"if_stmt","while_stmt","for_stmt","comp_stmt","input_stmt","output_stmt","var_dec","exp_stmt"};
+      string names[9]={"if_stmt","while_stmt","for_stmt","comp_stmt","input_stmt","output_stmt","var_dec","exp_stmt","return_stmt"};
 	  fout.width(40);
       fout<<names[p->nodekind_kind];
       break;
@@ -100,7 +131,7 @@ void NodeTable::shownode(struct TreeNode * p)
     case EXPR:
     {
       string names[6]={"Type specifier  ","Expr  ","Not Epr ","Array  ","Const decl  ","ID decl  "};
-      string types[4]={"Notype","interger","char","boolean"};
+      string types[7]={"Notype","interger","char","boolean","float","double","number"};
       string opname[]={"=","<","<=","==",">",">=","!=","+","-","*","/","%","++","--","&","|","^","!","<<",">>","&&","||","!"};
 	  
 	  fout.width(20);
@@ -123,8 +154,10 @@ void NodeTable::shownode(struct TreeNode * p)
              }
         case CONST_EXPR:
              {
-             if(p->type==Integer)
-                fout<<"Integer:"<<p->attr.val;
+             if(p->type==Number)
+			 {
+                fout<<"Number:"<<p->attr.val;
+			 }
              else 
                fout<<"Char:"<<p->attr.valc;
              break;

@@ -46,9 +46,9 @@ ifstream in("code.txt");
 }
 
 // place any declarations here
-%token INT CHAR VOID MAIN
+%token INT CHAR VOID FLOAT DOUBLE MAIN
 %token ID NUMBER CONSTCHAR
-%token IF ELSE FOR WHILE CIN COUT
+%token IF ELSE FOR WHILE CIN COUT RETURN
 %token ASSIGN LT LE EQ GT GE NEQ
 %token PLUS MINUS MUL DIV MOD INC DEC
 %token INAD IOR XOR NOT SHL SHR
@@ -107,6 +107,22 @@ program     :MAIN LPRACE RPRACE comp_stmt
                $$=$6; 
              }
              |CHAR MAIN LPRACE RPRACE comp_stmt
+             {
+               $$=$5; 
+             }
+             |FLOAT MAIN LPRACE VOID RPRACE comp_stmt
+             {
+               $$=$6; 
+             }
+             |FLOAT MAIN LPRACE RPRACE comp_stmt
+             {
+               $$=$5; 
+             }
+             |DOUBLE MAIN LPRACE VOID RPRACE comp_stmt
+             {
+               $$=$6; 
+             }
+             |DOUBLE MAIN LPRACE RPRACE comp_stmt
              {
                $$=$5; 
              }
@@ -171,7 +187,10 @@ stmt        :var_dec
              {
                $$=$1;
              }
-             
+             |return_stmt
+             {
+               $$=$1;
+             }
              ;
 var_dec      :type_spec idlist SIMICOLON
              {
@@ -194,6 +213,14 @@ type_spec    :INT
               |CHAR
               {
               $$ = my.createnode(EXPR, TYPE_EXPR, 0, Char,NULL,NULL,NULL,NULL);
+              }
+			  |FLOAT
+              {
+              $$ = my.createnode(EXPR, TYPE_EXPR, 0, Float,NULL,NULL,NULL,NULL);
+              }
+			  |DOUBLE
+              {
+              $$ = my.createnode(EXPR, TYPE_EXPR, 0, Double,NULL,NULL,NULL,NULL);
               }
               ; 
               
@@ -280,6 +307,11 @@ input_child      :SHR exp input_child
 output_stmt      :COUT SHL exp output_child
                   {
                    $$=my.createnode(STMT,OUTPUT_STMT,0,Notype,$3,$4,NULL,NULL);
+                  }
+                  ;
+return_stmt      :RETURN NUMBER
+                  {
+                   $$=my.createnode(STMT,RETURN_STMT,0,Notype,$2,NULL,NULL,NULL);
                   }
                   ;
 output_child      :SHL exp output_child
@@ -427,7 +459,7 @@ factor           :LPRACE exp RPRACE
                  }
                  |NUMBER
                  {
-				  $$=my.createnode(EXPR,CONST_EXPR,$1->attr.val,Integer,NULL,NULL,NULL,NULL);
+				  $$=my.createnode(EXPR,CONST_EXPR,$1->attr.val,Number,NULL,NULL,NULL,NULL);
                  }
                  |CONSTCHAR
                  {
@@ -448,14 +480,6 @@ int main(void)
 {
 	int n = 1;
 	mylexer lexer;
-	if(in)
-	{
-		cout<<"not NULL";
-	}
-	else
-	{
-		cout<<"NULL";
-	}
 	if (lexer.yycreate()) 
 	{
 	    lexer.yyin = &in;
