@@ -309,7 +309,7 @@ output_stmt      :COUT SHL exp output_child
                    $$=my.createnode(STMT,OUTPUT_STMT,0,Notype,$3,$4,NULL,NULL);
                   }
                   ;
-return_stmt      :RETURN NUMBER
+return_stmt      :RETURN simple_exp
                   {
                    $$=my.createnode(STMT,RETURN_STMT,0,Notype,$2,NULL,NULL,NULL);
                   }
