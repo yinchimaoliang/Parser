@@ -304,9 +304,9 @@ input_child      :SHR exp input_child
                   $$=NULL;
                  }
                  ;
-output_stmt      :COUT SHL exp output_child
+output_stmt      :COUT output_child
                   {
-                   $$=my.createnode(STMT,OUTPUT_STMT,0,Notype,$3,$4,NULL,NULL);
+                   $$=my.createnode(STMT,OUTPUT_STMT,0,Notype,$2,NULL,NULL,NULL);
                   }
                   ;
 return_stmt      :RETURN simple_exp
@@ -314,7 +314,7 @@ return_stmt      :RETURN simple_exp
                    $$=my.createnode(STMT,RETURN_STMT,0,Notype,$2,NULL,NULL,NULL);
                   }
                   ;
-output_child      :SHL exp output_child
+output_child      :SHL output_exp output_child
                   {
                    $$=my.createnode(STMT,OUTPUT_STMT,0,Notype,$2,$3,NULL,NULL);
                   }
@@ -332,6 +332,42 @@ exp_stmt         :exp SIMICOLON
                     $$=NULL;
                   }
                   ;
+output_exp		 :output_or_exp
+                  {
+                   $$=$1;
+                  }
+				  ;
+output_or_exp	 :output_or_exp OR output_and_exp
+                  {
+                    $$=my.createnode(EXPR,OP_EXPR,OR,Notype,$1,$3,NULL,NULL); 
+                  }
+                  |output_and_exp
+                  {
+                    $$=$1;
+                  }
+                  ;
+output_and_exp	 :output_and_exp AND output_shift_exp
+                  {
+                    $$=my.createnode(EXPR,OP_EXPR,AND,Notype,$1,$3,NULL,NULL); 
+                  }
+                  |output_shift_exp
+                  {
+                   $$=$1;
+                  }
+                  ;
+output_shift_exp :LBRACE shift_exp SHL rel_exp RBRACE
+                   {
+                     $$=my.createnode(EXPR,OP_EXPR,SHL,Notype,$2,$4,NULL,NULL); 
+                   }
+                   |shift_exp SHR rel_exp
+                   {
+                    $$=my.createnode(EXPR,OP_EXPR,SHR,Notype,$1,$3,NULL,NULL); 
+                   }
+                   |rel_exp
+                   {
+                   $$=$1;
+                   }
+                   ;
 exp              :id ASSIGN exp
                   {
                     $$=my.createnode(EXPR,OP_EXPR,ASSIGN,Notype,$1,$3,NULL,NULL);
