@@ -46,7 +46,7 @@ ifstream in("code.txt");
 }
 
 // place any declarations here
-%token INT CHAR VOID FLOAT DOUBLE MAIN
+%token INT CHAR VOID FLOAT DOUBLE MAIN STRING
 %token ID NUMBER CONSTCHAR
 %token IF ELSE FOR WHILE CIN COUT RETURN
 %token ASSIGN LT LE EQ GT GE NEQ
@@ -316,7 +316,7 @@ return_stmt      :RETURN simple_exp
                   ;
 output_child      :SHL exp output_child
                   {
-                   $$=my.createnode(STMT,OUTPUT_STMT,0,Notype,$3,$4,NULL,NULL);
+                   $$=my.createnode(STMT,OUTPUT_STMT,0,Notype,$2,$3,NULL,NULL);
                   }
                   |SIMICOLON
                   {
@@ -469,6 +469,10 @@ factor           :LPRACE exp RPRACE
                  {
                    $$=my.createnode(EXPR, NOT_EXPR, NOT, Notype, $2,NULL,NULL,NULL);
                  }
+				 |STRING
+				 {
+					$$=my.createnode(EXPR,CONST_EXPR,$1->attr.vals,String,NULL,NULL,NULL,NULL);
+				 }
                  ;
 
 %%

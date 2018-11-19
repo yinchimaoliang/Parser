@@ -45,7 +45,7 @@ id          ({letter}|[_])({letter}|{digit}|[_])*
 number      {digit}+(\.{digit}+)?(E[+-]?{digit}+)?
 constchar   '.'
 annotation  ("/*"([^*"]*|".*"|\*+[^/])*\**"*/")|("//".*\n)
-
+string 		\"(.)*\"
 %%
 
 /////////////////////////////////////////////////////////////////////////////
@@ -149,6 +149,10 @@ while       {return WHILE;}
                return NUMBER;
              
              }  
-
+{string}	 {
+				yylval=&node;
+              yylval->attr.vals=my.getString(yytext); //数字的值存入属性
+               return STRING;
+			 }
 %%
 

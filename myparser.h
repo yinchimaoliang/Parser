@@ -1,7 +1,7 @@
 /****************************************************************************
 *                     U N R E G I S T E R E D   C O P Y
 * 
-* You are on day 55 of your 30 day trial period.
+* You are on day 56 of your 30 day trial period.
 * 
 * This file was produced by an UNREGISTERED COPY of Parser Generator. It is
 * for evaluation purposes only. If you continue to use Parser Generator 30
@@ -18,8 +18,8 @@
 * myparser.h
 * C++ header file generated from myparser.y.
 * 
-* Date: 11/18/18
-* Time: 21:25:44
+* Date: 11/19/18
+* Time: 21:17:47
 * 
 * AYACC Version: 2.07
 ****************************************************************************/
@@ -85,51 +85,52 @@ public:
 #define FLOAT 260
 #define DOUBLE 261
 #define MAIN 262
-#define ID 263
-#define NUMBER 264
-#define CONSTCHAR 265
-#define IF 266
-#define ELSE 267
-#define FOR 268
-#define WHILE 269
-#define CIN 270
-#define COUT 271
-#define RETURN 272
-#define ASSIGN 273
-#define LT 274
-#define LE 275
-#define EQ 276
-#define GT 277
-#define GE 278
-#define NEQ 279
-#define PLUS 280
-#define MINUS 281
-#define MUL 282
-#define DIV 283
-#define MOD 284
-#define INC 285
-#define DEC 286
-#define INAD 287
-#define IOR 288
-#define XOR 289
-#define NOT 290
-#define SHL 291
-#define SHR 292
-#define AND 293
-#define OR 294
-#define OPPOSITE 295
-#define LBRACE 296
-#define RBRACE 297
-#define LPRACE 298
-#define RPRACE 299
-#define LSBRACE 300
-#define RSBRACE 301
-#define COMMA 302
-#define SIMICOLON 303
-#define COLON 304
-#define SQUITO 305
-#define NOTE 306
-#define LNOTE 307
-#define RNOTE 308
-#define UMINUS 309
+#define STRING 263
+#define ID 264
+#define NUMBER 265
+#define CONSTCHAR 266
+#define IF 267
+#define ELSE 268
+#define FOR 269
+#define WHILE 270
+#define CIN 271
+#define COUT 272
+#define RETURN 273
+#define ASSIGN 274
+#define LT 275
+#define LE 276
+#define EQ 277
+#define GT 278
+#define GE 279
+#define NEQ 280
+#define PLUS 281
+#define MINUS 282
+#define MUL 283
+#define DIV 284
+#define MOD 285
+#define INC 286
+#define DEC 287
+#define INAD 288
+#define IOR 289
+#define XOR 290
+#define NOT 291
+#define SHL 292
+#define SHR 293
+#define AND 294
+#define OR 295
+#define OPPOSITE 296
+#define LBRACE 297
+#define RBRACE 298
+#define LPRACE 299
+#define RPRACE 300
+#define LSBRACE 301
+#define RSBRACE 302
+#define COMMA 303
+#define SIMICOLON 304
+#define COLON 305
+#define SQUITO 306
+#define NOTE 307
+#define LNOTE 308
+#define RNOTE 309
+#define UMINUS 310
 #endif

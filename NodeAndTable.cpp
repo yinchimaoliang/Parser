@@ -113,6 +113,11 @@ double NodeTable::getNumber(char *str)
        return value;
 }
 
+char* NodeTable::getString(char *str)
+{
+	return str;
+}
+
 //·ÖÎöÊ÷¶¨Òå¡ª¡ª¡ª¡ª
 void NodeTable::shownode(struct TreeNode * p)
 {  
@@ -131,7 +136,7 @@ void NodeTable::shownode(struct TreeNode * p)
     case EXPR:
     {
       string names[6]={"Type specifier  ","Expr  ","Not Epr ","Array  ","Const decl  ","ID decl  "};
-      string types[7]={"Notype","interger","char","boolean","float","double","number"};
+      string types[8]={"Notype","interger","char","boolean","float","double","number","string"};
       string opname[]={"=","<","<=","==",">",">=","!=","+","-","*","/","%","++","--","&","|","^","!","<<",">>","&&","||","!"};
 	  
 	  fout.width(20);
@@ -159,7 +164,14 @@ void NodeTable::shownode(struct TreeNode * p)
                 fout<<"Number:"<<p->attr.val;
 			 }
              else 
-               fout<<"Char:"<<p->attr.valc;
+				 if(p->type==String)
+				 {
+					 fout<<"String:"<<p->attr.vals;
+				 }
+				 else
+				 {
+					fout<<"Char:"<<p->attr.valc;
+				 }
              break;
              }
         case ID_EXPR:

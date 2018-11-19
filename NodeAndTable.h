@@ -47,20 +47,22 @@ enum TYPE
  Boolean,
  Float,
  Double,
- Number
+ Number,
+ String
 };
 union NodeAttr
 {
  int op;
  double val;
  char valc;
+ char* vals;
  int symbol_add;    //所在符号表位置
  
  NodeAttr(void){op=0;} //操作符
  NodeAttr(double i){val = i;}//获得数字
  NodeAttr(int i){op=i;} //NUM
  NodeAttr(char c){valc=c;}//字符型
- 
+ NodeAttr(char* s){vals=s;}//字符串型
 };
 struct TreeNode
 {
@@ -97,6 +99,7 @@ public:
     string& getname(int pos);
     int set_type(int pos,int type);
     int gettype(int pos);
+	char* getString(char*);
 	void shownode(struct TreeNode *p);
    	TreeNode * createnode(int nodekind,int nodekind_kind,NodeAttr attr,int type,struct TreeNode *child0,struct TreeNode *child1,struct TreeNode *child2,struct TreeNode *child3);
 	void Display(TreeNode *p);
