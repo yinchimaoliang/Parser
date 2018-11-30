@@ -19,7 +19,7 @@
 # YACC verbose file generated from myparser.y.
 # 
 # Date: 11/20/18
-# Time: 07:46:33
+# Time: 08:25:09
 # 
 # AYACC Version: 2.07
 #############################################################################
@@ -82,32 +82,32 @@
 
    40  while_stmt : WHILE LPRACE exp RPRACE stmt
 
-   41  input_stmt : CIN SHR exp input_child
+   41  input_stmt : CIN input_child
 
-   42  input_child : SHR exp input_child
+   42  input_child : SHR io_exp input_child
    43              | SIMICOLON
 
    44  output_stmt : COUT output_child
 
    45  return_stmt : RETURN simple_exp
 
-   46  output_child : SHL output_exp output_child
+   46  output_child : SHL io_exp output_child
    47               | SIMICOLON
 
    48  exp_stmt : exp SIMICOLON
    49           | SIMICOLON
 
-   50  output_exp : output_or_exp
+   50  io_exp : io_or_exp
 
-   51  output_or_exp : output_or_exp OR output_and_exp
-   52                | output_and_exp
+   51  io_or_exp : io_or_exp OR io_and_exp
+   52            | io_and_exp
 
-   53  output_and_exp : output_and_exp AND output_shift_exp
-   54                 | output_shift_exp
+   53  io_and_exp : io_and_exp AND io_shift_exp
+   54             | io_shift_exp
 
-   55  output_shift_exp : LBRACE shift_exp SHL rel_exp RBRACE
-   56                   | shift_exp SHR rel_exp
-   57                   | rel_exp
+   55  io_shift_exp : LBRACE shift_exp SHL rel_exp RBRACE
+   56               | shift_exp SHR rel_exp
+   57               | rel_exp
 
    58  exp : id ASSIGN exp
    59      | id ASSIGN SQUITO exp SQUITO
@@ -419,24 +419,24 @@ state 32
 	comp_stmt  goto 64
 	stmt_list  goto 65
 	stmt  goto 66
-	type_spec  goto 67
-	var_dec  goto 68
-	while_stmt  goto 69
-	output_stmt  goto 70
-	exp_stmt  goto 71
-	exp  goto 72
-	if_stmt  goto 73
-	return_stmt  goto 74
-	id  goto 75
-	simple_exp  goto 76
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 70
+	rel_exp  goto 71
+	and_exp  goto 72
+	or_exp  goto 73
+	exp_stmt  goto 74
+	output_stmt  goto 75
+	return_stmt  goto 76
 	input_stmt  goto 77
-	for_stmt  goto 78
-	or_exp  goto 79
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 84
+	while_stmt  goto 78
+	var_dec  goto 79
+	if_stmt  goto 80
+	for_stmt  goto 81
+	id  goto 82
+	exp  goto 83
+	type_spec  goto 84
 
 
 state 33
@@ -570,8 +570,8 @@ state 52
 
 
 state 53
-	if_stmt : IF . LPRACE exp RPRACE stmt ELSE stmt
 	if_stmt : IF . LPRACE exp RPRACE stmt
+	if_stmt : IF . LPRACE exp RPRACE stmt ELSE stmt
 
 	LPRACE  shift 90
 
@@ -590,18 +590,21 @@ state 55
 
 
 state 56
-	input_stmt : CIN . SHR exp input_child
+	input_stmt : CIN . input_child
 
 	SHR  shift 93
+	SIMICOLON  shift 94
+
+	input_child  goto 95
 
 
 state 57
 	output_stmt : COUT . output_child
 
-	SHL  shift 94
-	SIMICOLON  shift 95
+	SHL  shift 96
+	SIMICOLON  shift 97
 
-	output_child  goto 96
+	output_child  goto 98
 
 
 state 58
@@ -615,10 +618,10 @@ state 58
 	NOT  shift 60
 	LPRACE  shift 62
 
-	id  goto 97
-	simple_exp  goto 98
-	term  goto 80
-	factor  goto 81
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 99
+	id  goto 100
 
 
 state 59
@@ -632,10 +635,10 @@ state 59
 	NOT  shift 60
 	LPRACE  shift 62
 
-	id  goto 97
-	simple_exp  goto 99
-	term  goto 80
-	factor  goto 81
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 101
+	id  goto 100
 
 
 state 60
@@ -648,8 +651,8 @@ state 60
 	NOT  shift 60
 	LPRACE  shift 62
 
-	id  goto 97
-	factor  goto 100
+	factor  goto 102
+	id  goto 100
 
 
 state 61
@@ -669,15 +672,15 @@ state 62
 	NOT  shift 60
 	LPRACE  shift 62
 
-	exp  goto 101
-	id  goto 75
-	simple_exp  goto 76
-	or_exp  goto 79
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 84
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 70
+	rel_exp  goto 71
+	and_exp  goto 72
+	or_exp  goto 73
+	id  goto 82
+	exp  goto 103
 
 
 state 63
@@ -713,30 +716,30 @@ state 65
 	MINUS  shift 59
 	NOT  shift 60
 	LBRACE  shift 32
-	RBRACE  shift 102
+	RBRACE  shift 104
 	LPRACE  shift 62
 	SIMICOLON  shift 63
 
 	comp_stmt  goto 64
-	stmt  goto 103
-	type_spec  goto 67
-	var_dec  goto 68
-	while_stmt  goto 69
-	output_stmt  goto 70
-	exp_stmt  goto 71
-	exp  goto 72
-	if_stmt  goto 73
-	return_stmt  goto 74
-	id  goto 75
-	simple_exp  goto 76
+	stmt  goto 105
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 70
+	rel_exp  goto 71
+	and_exp  goto 72
+	or_exp  goto 73
+	exp_stmt  goto 74
+	output_stmt  goto 75
+	return_stmt  goto 76
 	input_stmt  goto 77
-	for_stmt  goto 78
-	or_exp  goto 79
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 84
+	while_stmt  goto 78
+	var_dec  goto 79
+	if_stmt  goto 80
+	for_stmt  goto 81
+	id  goto 82
+	exp  goto 83
+	type_spec  goto 84
 
 
 state 66
@@ -746,6 +749,145 @@ state 66
 
 
 state 67
+	term : term . DIV factor
+	term : term . MUL factor
+	simple_exp : term .  (80)
+	term : term . MOD factor
+
+	MUL  shift 106
+	DIV  shift 107
+	MOD  shift 108
+	.  reduce 80
+
+
+state 68
+	term : factor .  (84)
+
+	.  reduce 84
+
+
+state 69
+	simple_exp : simple_exp . DEC
+	simple_exp : simple_exp . MINUS term
+	simple_exp : simple_exp . PLUS term
+	rel_exp : simple_exp .  (74)
+	simple_exp : simple_exp . INC
+
+	PLUS  shift 109
+	MINUS  shift 110
+	INC  shift 111
+	DEC  shift 112
+	.  reduce 74
+
+
+state 70
+	and_exp : shift_exp .  (64)
+	shift_exp : shift_exp . SHL rel_exp
+	shift_exp : shift_exp . SHR rel_exp
+
+	SHL  shift 113
+	SHR  shift 114
+	.  reduce 64
+
+
+state 71
+	rel_exp : rel_exp . EQ simple_exp
+	shift_exp : rel_exp .  (67)
+	rel_exp : rel_exp . LE simple_exp
+	rel_exp : rel_exp . NEQ simple_exp
+	rel_exp : rel_exp . GT simple_exp
+	rel_exp : rel_exp . GE simple_exp
+	rel_exp : rel_exp . LT simple_exp
+
+	LT  shift 115
+	LE  shift 116
+	EQ  shift 117
+	GT  shift 118
+	GE  shift 119
+	NEQ  shift 120
+	.  reduce 67
+
+
+state 72
+	or_exp : and_exp .  (62)
+	and_exp : and_exp . AND shift_exp
+
+	AND  shift 121
+	.  reduce 62
+
+
+state 73
+	or_exp : or_exp . OR and_exp
+	exp : or_exp .  (60)
+
+	OR  shift 122
+	.  reduce 60
+
+
+state 74
+	stmt : exp_stmt .  (18)
+
+	.  reduce 18
+
+
+state 75
+	stmt : output_stmt .  (23)
+
+	.  reduce 23
+
+
+state 76
+	stmt : return_stmt .  (25)
+
+	.  reduce 25
+
+
+state 77
+	stmt : input_stmt .  (22)
+
+	.  reduce 22
+
+
+state 78
+	stmt : while_stmt .  (20)
+
+	.  reduce 20
+
+
+state 79
+	stmt : var_dec .  (17)
+
+	.  reduce 17
+
+
+state 80
+	stmt : if_stmt .  (19)
+
+	.  reduce 19
+
+
+state 81
+	stmt : for_stmt .  (21)
+
+	.  reduce 21
+
+
+state 82
+	exp : id . ASSIGN exp
+	exp : id . ASSIGN SQUITO exp SQUITO
+	factor : id .  (86)
+
+	ASSIGN  shift 123
+	.  reduce 86
+
+
+state 83
+	exp_stmt : exp . SIMICOLON
+
+	SIMICOLON  shift 124
+
+
+state 84
 	var_dec : type_spec . idlist SIMICOLON
 
 	STRING  shift 49
@@ -756,156 +898,16 @@ state 67
 	NOT  shift 60
 	LPRACE  shift 62
 
-	idlist  goto 104
-	exp  goto 105
-	id  goto 106
-	simple_exp  goto 76
-	or_exp  goto 79
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 84
-
-
-state 68
-	stmt : var_dec .  (17)
-
-	.  reduce 17
-
-
-state 69
-	stmt : while_stmt .  (20)
-
-	.  reduce 20
-
-
-state 70
-	stmt : output_stmt .  (23)
-
-	.  reduce 23
-
-
-state 71
-	stmt : exp_stmt .  (18)
-
-	.  reduce 18
-
-
-state 72
-	exp_stmt : exp . SIMICOLON
-
-	SIMICOLON  shift 107
-
-
-state 73
-	stmt : if_stmt .  (19)
-
-	.  reduce 19
-
-
-state 74
-	stmt : return_stmt .  (25)
-
-	.  reduce 25
-
-
-state 75
-	exp : id . ASSIGN SQUITO exp SQUITO
-	exp : id . ASSIGN exp
-	factor : id .  (86)
-
-	ASSIGN  shift 108
-	.  reduce 86
-
-
-state 76
-	simple_exp : simple_exp . DEC
-	simple_exp : simple_exp . INC
-	simple_exp : simple_exp . PLUS term
-	rel_exp : simple_exp .  (74)
-	simple_exp : simple_exp . MINUS term
-
-	PLUS  shift 109
-	MINUS  shift 110
-	INC  shift 111
-	DEC  shift 112
-	.  reduce 74
-
-
-state 77
-	stmt : input_stmt .  (22)
-
-	.  reduce 22
-
-
-state 78
-	stmt : for_stmt .  (21)
-
-	.  reduce 21
-
-
-state 79
-	or_exp : or_exp . OR and_exp
-	exp : or_exp .  (60)
-
-	OR  shift 113
-	.  reduce 60
-
-
-state 80
-	simple_exp : term .  (80)
-	term : term . MUL factor
-	term : term . MOD factor
-	term : term . DIV factor
-
-	MUL  shift 114
-	DIV  shift 115
-	MOD  shift 116
-	.  reduce 80
-
-
-state 81
-	term : factor .  (84)
-
-	.  reduce 84
-
-
-state 82
-	rel_exp : rel_exp . EQ simple_exp
-	shift_exp : rel_exp .  (67)
-	rel_exp : rel_exp . LT simple_exp
-	rel_exp : rel_exp . GT simple_exp
-	rel_exp : rel_exp . LE simple_exp
-	rel_exp : rel_exp . NEQ simple_exp
-	rel_exp : rel_exp . GE simple_exp
-
-	LT  shift 117
-	LE  shift 118
-	EQ  shift 119
-	GT  shift 120
-	GE  shift 121
-	NEQ  shift 122
-	.  reduce 67
-
-
-83: shift-reduce conflict (shift 124, reduce 64) on SHR
-state 83
-	and_exp : shift_exp .  (64)
-	shift_exp : shift_exp . SHL rel_exp
-	shift_exp : shift_exp . SHR rel_exp
-
-	SHL  shift 123
-	SHR  shift 124
-	.  reduce 64
-
-
-state 84
-	or_exp : and_exp .  (62)
-	and_exp : and_exp . AND shift_exp
-
-	AND  shift 125
-	.  reduce 62
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 70
+	rel_exp  goto 71
+	and_exp  goto 72
+	or_exp  goto 73
+	idlist  goto 125
+	id  goto 126
+	exp  goto 127
 
 
 state 85
@@ -939,8 +941,8 @@ state 89
 
 
 state 90
-	if_stmt : IF LPRACE . exp RPRACE stmt ELSE stmt
 	if_stmt : IF LPRACE . exp RPRACE stmt
+	if_stmt : IF LPRACE . exp RPRACE stmt ELSE stmt
 
 	STRING  shift 49
 	ID  shift 50
@@ -950,15 +952,15 @@ state 90
 	NOT  shift 60
 	LPRACE  shift 62
 
-	exp  goto 126
-	id  goto 75
-	simple_exp  goto 76
-	or_exp  goto 79
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 84
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 70
+	rel_exp  goto 71
+	and_exp  goto 72
+	or_exp  goto 73
+	id  goto 82
+	exp  goto 128
 
 
 state 91
@@ -974,16 +976,16 @@ state 91
 	LPRACE  shift 62
 	SIMICOLON  shift 63
 
-	exp_stmt  goto 127
-	exp  goto 72
-	id  goto 75
-	simple_exp  goto 76
-	or_exp  goto 79
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 84
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 70
+	rel_exp  goto 71
+	and_exp  goto 72
+	or_exp  goto 73
+	exp_stmt  goto 129
+	id  goto 82
+	exp  goto 83
 
 
 state 92
@@ -997,19 +999,19 @@ state 92
 	NOT  shift 60
 	LPRACE  shift 62
 
-	exp  goto 128
-	id  goto 75
-	simple_exp  goto 76
-	or_exp  goto 79
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 84
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 70
+	rel_exp  goto 71
+	and_exp  goto 72
+	or_exp  goto 73
+	id  goto 82
+	exp  goto 130
 
 
 state 93
-	input_stmt : CIN SHR . exp input_child
+	input_child : SHR . io_exp input_child
 
 	STRING  shift 49
 	ID  shift 50
@@ -1017,21 +1019,35 @@ state 93
 	CONSTCHAR  shift 52
 	MINUS  shift 59
 	NOT  shift 60
+	LBRACE  shift 131
 	LPRACE  shift 62
 
-	exp  goto 129
-	id  goto 75
-	simple_exp  goto 76
-	or_exp  goto 79
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 84
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	io_exp  goto 132
+	io_shift_exp  goto 133
+	shift_exp  goto 134
+	rel_exp  goto 135
+	io_or_exp  goto 136
+	io_and_exp  goto 137
+	id  goto 100
 
 
 state 94
-	output_child : SHL . output_exp output_child
+	input_child : SIMICOLON .  (43)
+
+	.  reduce 43
+
+
+state 95
+	input_stmt : CIN input_child .  (41)
+
+	.  reduce 41
+
+
+state 96
+	output_child : SHL . io_exp output_child
 
 	STRING  shift 49
 	ID  shift 50
@@ -1039,46 +1055,40 @@ state 94
 	CONSTCHAR  shift 52
 	MINUS  shift 59
 	NOT  shift 60
-	LBRACE  shift 130
+	LBRACE  shift 131
 	LPRACE  shift 62
 
-	output_or_exp  goto 131
-	output_exp  goto 132
-	id  goto 97
-	simple_exp  goto 76
-	output_and_exp  goto 133
-	term  goto 80
-	output_shift_exp  goto 134
-	factor  goto 81
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	io_exp  goto 138
+	io_shift_exp  goto 133
+	shift_exp  goto 134
 	rel_exp  goto 135
-	shift_exp  goto 136
+	io_or_exp  goto 136
+	io_and_exp  goto 137
+	id  goto 100
 
 
-state 95
+state 97
 	output_child : SIMICOLON .  (47)
 
 	.  reduce 47
 
 
-state 96
+state 98
 	output_stmt : COUT output_child .  (44)
 
 	.  reduce 44
 
 
-state 97
-	factor : id .  (86)
-
-	.  reduce 86
-
-
-98: shift-reduce conflict (shift 110, reduce 45) on MINUS
-state 98
+99: shift-reduce conflict (shift 110, reduce 45) on MINUS
+state 99
 	return_stmt : RETURN simple_exp .  (45)
 	simple_exp : simple_exp . DEC
-	simple_exp : simple_exp . INC
-	simple_exp : simple_exp . PLUS term
 	simple_exp : simple_exp . MINUS term
+	simple_exp : simple_exp . PLUS term
+	simple_exp : simple_exp . INC
 
 	PLUS  shift 109
 	MINUS  shift 110
@@ -1087,101 +1097,90 @@ state 98
 	.  reduce 45
 
 
-99: shift-reduce conflict (shift 111, reduce 77) on INC
-99: shift-reduce conflict (shift 112, reduce 77) on DEC
-state 99
-	simple_exp : simple_exp . DEC
+state 100
+	factor : id .  (86)
+
+	.  reduce 86
+
+
+101: shift-reduce conflict (shift 111, reduce 77) on INC
+101: shift-reduce conflict (shift 112, reduce 77) on DEC
+state 101
 	simple_exp : MINUS simple_exp .  (77)
-	simple_exp : simple_exp . INC
-	simple_exp : simple_exp . PLUS term
+	simple_exp : simple_exp . DEC
 	simple_exp : simple_exp . MINUS term
+	simple_exp : simple_exp . PLUS term
+	simple_exp : simple_exp . INC
 
 	INC  shift 111
 	DEC  shift 112
 	.  reduce 77
 
 
-state 100
+state 102
 	factor : NOT factor .  (89)
 
 	.  reduce 89
 
 
-state 101
+state 103
 	factor : LPRACE exp . RPRACE
 
-	RPRACE  shift 137
+	RPRACE  shift 139
 
 
-state 102
+state 104
 	comp_stmt : LBRACE stmt_list RBRACE .  (13)
 
 	.  reduce 13
 
 
-state 103
+state 105
 	stmt_list : stmt_list stmt .  (15)
 
 	.  reduce 15
 
 
-state 104
-	var_dec : type_spec idlist . SIMICOLON
-	idlist : idlist . COMMA id
-	idlist : idlist . COMMA exp
-
-	COMMA  shift 138
-	SIMICOLON  shift 139
-
-
-state 105
-	idlist : exp .  (34)
-
-	.  reduce 34
-
-
-106: reduce-reduce conflict (reduce 33, reduce 86) on COMMA
-106: reduce-reduce conflict (reduce 33, reduce 86) on SIMICOLON
 state 106
-	idlist : id .  (33)
-	exp : id . ASSIGN SQUITO exp SQUITO
-	exp : id . ASSIGN exp
-	factor : id .  (86)
-
-	ASSIGN  shift 108
-	COMMA  reduce 33
-	SIMICOLON  reduce 33
-	.  reduce 86
-
-
-state 107
-	exp_stmt : exp SIMICOLON .  (48)
-
-	.  reduce 48
-
-
-state 108
-	exp : id ASSIGN . SQUITO exp SQUITO
-	exp : id ASSIGN . exp
+	term : term MUL . factor
 
 	STRING  shift 49
 	ID  shift 50
 	NUMBER  shift 51
 	CONSTCHAR  shift 52
-	MINUS  shift 59
 	NOT  shift 60
 	LPRACE  shift 62
-	SQUITO  shift 140
 
-	exp  goto 141
-	id  goto 75
-	simple_exp  goto 76
-	or_exp  goto 79
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 84
+	factor  goto 140
+	id  goto 100
+
+
+state 107
+	term : term DIV . factor
+
+	STRING  shift 49
+	ID  shift 50
+	NUMBER  shift 51
+	CONSTCHAR  shift 52
+	NOT  shift 60
+	LPRACE  shift 62
+
+	factor  goto 141
+	id  goto 100
+
+
+state 108
+	term : term MOD . factor
+
+	STRING  shift 49
+	ID  shift 50
+	NUMBER  shift 51
+	CONSTCHAR  shift 52
+	NOT  shift 60
+	LPRACE  shift 62
+
+	factor  goto 142
+	id  goto 100
 
 
 state 109
@@ -1194,9 +1193,9 @@ state 109
 	NOT  shift 60
 	LPRACE  shift 62
 
-	id  goto 97
-	term  goto 142
-	factor  goto 81
+	term  goto 143
+	factor  goto 68
+	id  goto 100
 
 
 state 110
@@ -1209,9 +1208,9 @@ state 110
 	NOT  shift 60
 	LPRACE  shift 62
 
-	id  goto 97
-	term  goto 143
-	factor  goto 81
+	term  goto 144
+	factor  goto 68
+	id  goto 100
 
 
 state 111
@@ -1227,170 +1226,6 @@ state 112
 
 
 state 113
-	or_exp : or_exp OR . and_exp
-
-	STRING  shift 49
-	ID  shift 50
-	NUMBER  shift 51
-	CONSTCHAR  shift 52
-	MINUS  shift 59
-	NOT  shift 60
-	LPRACE  shift 62
-
-	id  goto 97
-	simple_exp  goto 76
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 144
-
-
-state 114
-	term : term MUL . factor
-
-	STRING  shift 49
-	ID  shift 50
-	NUMBER  shift 51
-	CONSTCHAR  shift 52
-	NOT  shift 60
-	LPRACE  shift 62
-
-	id  goto 97
-	factor  goto 145
-
-
-state 115
-	term : term DIV . factor
-
-	STRING  shift 49
-	ID  shift 50
-	NUMBER  shift 51
-	CONSTCHAR  shift 52
-	NOT  shift 60
-	LPRACE  shift 62
-
-	id  goto 97
-	factor  goto 146
-
-
-state 116
-	term : term MOD . factor
-
-	STRING  shift 49
-	ID  shift 50
-	NUMBER  shift 51
-	CONSTCHAR  shift 52
-	NOT  shift 60
-	LPRACE  shift 62
-
-	id  goto 97
-	factor  goto 147
-
-
-state 117
-	rel_exp : rel_exp LT . simple_exp
-
-	STRING  shift 49
-	ID  shift 50
-	NUMBER  shift 51
-	CONSTCHAR  shift 52
-	MINUS  shift 59
-	NOT  shift 60
-	LPRACE  shift 62
-
-	id  goto 97
-	simple_exp  goto 148
-	term  goto 80
-	factor  goto 81
-
-
-state 118
-	rel_exp : rel_exp LE . simple_exp
-
-	STRING  shift 49
-	ID  shift 50
-	NUMBER  shift 51
-	CONSTCHAR  shift 52
-	MINUS  shift 59
-	NOT  shift 60
-	LPRACE  shift 62
-
-	id  goto 97
-	simple_exp  goto 149
-	term  goto 80
-	factor  goto 81
-
-
-state 119
-	rel_exp : rel_exp EQ . simple_exp
-
-	STRING  shift 49
-	ID  shift 50
-	NUMBER  shift 51
-	CONSTCHAR  shift 52
-	MINUS  shift 59
-	NOT  shift 60
-	LPRACE  shift 62
-
-	id  goto 97
-	simple_exp  goto 150
-	term  goto 80
-	factor  goto 81
-
-
-state 120
-	rel_exp : rel_exp GT . simple_exp
-
-	STRING  shift 49
-	ID  shift 50
-	NUMBER  shift 51
-	CONSTCHAR  shift 52
-	MINUS  shift 59
-	NOT  shift 60
-	LPRACE  shift 62
-
-	id  goto 97
-	simple_exp  goto 151
-	term  goto 80
-	factor  goto 81
-
-
-state 121
-	rel_exp : rel_exp GE . simple_exp
-
-	STRING  shift 49
-	ID  shift 50
-	NUMBER  shift 51
-	CONSTCHAR  shift 52
-	MINUS  shift 59
-	NOT  shift 60
-	LPRACE  shift 62
-
-	id  goto 97
-	simple_exp  goto 152
-	term  goto 80
-	factor  goto 81
-
-
-state 122
-	rel_exp : rel_exp NEQ . simple_exp
-
-	STRING  shift 49
-	ID  shift 50
-	NUMBER  shift 51
-	CONSTCHAR  shift 52
-	MINUS  shift 59
-	NOT  shift 60
-	LPRACE  shift 62
-
-	id  goto 97
-	simple_exp  goto 153
-	term  goto 80
-	factor  goto 81
-
-
-state 123
 	shift_exp : shift_exp SHL . rel_exp
 
 	STRING  shift 49
@@ -1401,14 +1236,14 @@ state 123
 	NOT  shift 60
 	LPRACE  shift 62
 
-	id  goto 97
-	simple_exp  goto 76
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 154
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	rel_exp  goto 145
+	id  goto 100
 
 
-state 124
+state 114
 	shift_exp : shift_exp SHR . rel_exp
 
 	STRING  shift 49
@@ -1419,14 +1254,116 @@ state 124
 	NOT  shift 60
 	LPRACE  shift 62
 
-	id  goto 97
-	simple_exp  goto 76
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 155
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	rel_exp  goto 146
+	id  goto 100
 
 
-state 125
+state 115
+	rel_exp : rel_exp LT . simple_exp
+
+	STRING  shift 49
+	ID  shift 50
+	NUMBER  shift 51
+	CONSTCHAR  shift 52
+	MINUS  shift 59
+	NOT  shift 60
+	LPRACE  shift 62
+
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 147
+	id  goto 100
+
+
+state 116
+	rel_exp : rel_exp LE . simple_exp
+
+	STRING  shift 49
+	ID  shift 50
+	NUMBER  shift 51
+	CONSTCHAR  shift 52
+	MINUS  shift 59
+	NOT  shift 60
+	LPRACE  shift 62
+
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 148
+	id  goto 100
+
+
+state 117
+	rel_exp : rel_exp EQ . simple_exp
+
+	STRING  shift 49
+	ID  shift 50
+	NUMBER  shift 51
+	CONSTCHAR  shift 52
+	MINUS  shift 59
+	NOT  shift 60
+	LPRACE  shift 62
+
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 149
+	id  goto 100
+
+
+state 118
+	rel_exp : rel_exp GT . simple_exp
+
+	STRING  shift 49
+	ID  shift 50
+	NUMBER  shift 51
+	CONSTCHAR  shift 52
+	MINUS  shift 59
+	NOT  shift 60
+	LPRACE  shift 62
+
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 150
+	id  goto 100
+
+
+state 119
+	rel_exp : rel_exp GE . simple_exp
+
+	STRING  shift 49
+	ID  shift 50
+	NUMBER  shift 51
+	CONSTCHAR  shift 52
+	MINUS  shift 59
+	NOT  shift 60
+	LPRACE  shift 62
+
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 151
+	id  goto 100
+
+
+state 120
+	rel_exp : rel_exp NEQ . simple_exp
+
+	STRING  shift 49
+	ID  shift 50
+	NUMBER  shift 51
+	CONSTCHAR  shift 52
+	MINUS  shift 59
+	NOT  shift 60
+	LPRACE  shift 62
+
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 152
+	id  goto 100
+
+
+state 121
 	and_exp : and_exp AND . shift_exp
 
 	STRING  shift 49
@@ -1437,22 +1374,101 @@ state 125
 	NOT  shift 60
 	LPRACE  shift 62
 
-	id  goto 97
-	simple_exp  goto 76
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 156
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 153
+	rel_exp  goto 71
+	id  goto 100
 
 
+state 122
+	or_exp : or_exp OR . and_exp
+
+	STRING  shift 49
+	ID  shift 50
+	NUMBER  shift 51
+	CONSTCHAR  shift 52
+	MINUS  shift 59
+	NOT  shift 60
+	LPRACE  shift 62
+
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 70
+	rel_exp  goto 71
+	and_exp  goto 154
+	id  goto 100
+
+
+state 123
+	exp : id ASSIGN . exp
+	exp : id ASSIGN . SQUITO exp SQUITO
+
+	STRING  shift 49
+	ID  shift 50
+	NUMBER  shift 51
+	CONSTCHAR  shift 52
+	MINUS  shift 59
+	NOT  shift 60
+	LPRACE  shift 62
+	SQUITO  shift 155
+
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 70
+	rel_exp  goto 71
+	and_exp  goto 72
+	or_exp  goto 73
+	id  goto 82
+	exp  goto 156
+
+
+state 124
+	exp_stmt : exp SIMICOLON .  (48)
+
+	.  reduce 48
+
+
+state 125
+	var_dec : type_spec idlist . SIMICOLON
+	idlist : idlist . COMMA id
+	idlist : idlist . COMMA exp
+
+	COMMA  shift 157
+	SIMICOLON  shift 158
+
+
+126: reduce-reduce conflict (reduce 33, reduce 86) on COMMA
+126: reduce-reduce conflict (reduce 33, reduce 86) on SIMICOLON
 state 126
-	if_stmt : IF LPRACE exp . RPRACE stmt ELSE stmt
-	if_stmt : IF LPRACE exp . RPRACE stmt
+	idlist : id .  (33)
+	exp : id . ASSIGN exp
+	exp : id . ASSIGN SQUITO exp SQUITO
+	factor : id .  (86)
 
-	RPRACE  shift 157
+	ASSIGN  shift 123
+	COMMA  reduce 33
+	SIMICOLON  reduce 33
+	.  reduce 86
 
 
 state 127
+	idlist : exp .  (34)
+
+	.  reduce 34
+
+
+state 128
+	if_stmt : IF LPRACE exp . RPRACE stmt
+	if_stmt : IF LPRACE exp . RPRACE stmt ELSE stmt
+
+	RPRACE  shift 159
+
+
+state 129
 	for_stmt : FOR LPRACE exp_stmt . exp_stmt exp RPRACE stmt
 	for_stmt : FOR LPRACE exp_stmt . exp_stmt RPRACE stmt
 
@@ -1465,35 +1481,26 @@ state 127
 	LPRACE  shift 62
 	SIMICOLON  shift 63
 
-	exp_stmt  goto 158
-	exp  goto 72
-	id  goto 75
-	simple_exp  goto 76
-	or_exp  goto 79
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 84
-
-
-state 128
-	while_stmt : WHILE LPRACE exp . RPRACE stmt
-
-	RPRACE  shift 159
-
-
-state 129
-	input_stmt : CIN SHR exp . input_child
-
-	SHR  shift 160
-	SIMICOLON  shift 161
-
-	input_child  goto 162
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 70
+	rel_exp  goto 71
+	and_exp  goto 72
+	or_exp  goto 73
+	exp_stmt  goto 160
+	id  goto 82
+	exp  goto 83
 
 
 state 130
-	output_shift_exp : LBRACE . shift_exp SHL rel_exp RBRACE
+	while_stmt : WHILE LPRACE exp . RPRACE stmt
+
+	RPRACE  shift 161
+
+
+state 131
+	io_shift_exp : LBRACE . shift_exp SHL rel_exp RBRACE
 
 	STRING  shift 49
 	ID  shift 50
@@ -1503,82 +1510,299 @@ state 130
 	NOT  shift 60
 	LPRACE  shift 62
 
-	id  goto 97
-	simple_exp  goto 76
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 163
-
-
-state 131
-	output_exp : output_or_exp .  (50)
-	output_or_exp : output_or_exp . OR output_and_exp
-
-	OR  shift 164
-	.  reduce 50
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 162
+	rel_exp  goto 71
+	id  goto 100
 
 
 state 132
-	output_child : SHL output_exp . output_child
+	input_child : SHR io_exp . input_child
 
-	SHL  shift 94
-	SIMICOLON  shift 95
+	SHR  shift 93
+	SIMICOLON  shift 94
 
-	output_child  goto 165
+	input_child  goto 163
 
 
 state 133
-	output_and_exp : output_and_exp . AND output_shift_exp
-	output_or_exp : output_and_exp .  (52)
+	io_and_exp : io_shift_exp .  (54)
+
+	.  reduce 54
+
+
+state 134
+	shift_exp : shift_exp . SHL rel_exp
+	io_shift_exp : shift_exp . SHR rel_exp
+	shift_exp : shift_exp . SHR rel_exp
+
+	SHL  shift 113
+	SHR  shift 164
+
+
+135: reduce-reduce conflict (reduce 57, reduce 67) on SHL
+135: reduce-reduce conflict (reduce 57, reduce 67) on SHR
+state 135
+	io_shift_exp : rel_exp .  (57)
+	rel_exp : rel_exp . EQ simple_exp
+	shift_exp : rel_exp .  (67)
+	rel_exp : rel_exp . LE simple_exp
+	rel_exp : rel_exp . NEQ simple_exp
+	rel_exp : rel_exp . GT simple_exp
+	rel_exp : rel_exp . GE simple_exp
+	rel_exp : rel_exp . LT simple_exp
+
+	LT  shift 115
+	LE  shift 116
+	EQ  shift 117
+	GT  shift 118
+	GE  shift 119
+	NEQ  shift 120
+	.  reduce 57
+
+
+state 136
+	io_exp : io_or_exp .  (50)
+	io_or_exp : io_or_exp . OR io_and_exp
+
+	OR  shift 165
+	.  reduce 50
+
+
+state 137
+	io_or_exp : io_and_exp .  (52)
+	io_and_exp : io_and_exp . AND io_shift_exp
 
 	AND  shift 166
 	.  reduce 52
 
 
-state 134
-	output_and_exp : output_shift_exp .  (54)
+state 138
+	output_child : SHL io_exp . output_child
 
-	.  reduce 54
+	SHL  shift 96
+	SIMICOLON  shift 97
 
-
-135: reduce-reduce conflict (reduce 57, reduce 67) on SHL
-state 135
-	output_shift_exp : rel_exp .  (57)
-	rel_exp : rel_exp . EQ simple_exp
-	shift_exp : rel_exp .  (67)
-	rel_exp : rel_exp . LT simple_exp
-	rel_exp : rel_exp . GT simple_exp
-	rel_exp : rel_exp . LE simple_exp
-	rel_exp : rel_exp . NEQ simple_exp
-	rel_exp : rel_exp . GE simple_exp
-
-	LT  shift 117
-	LE  shift 118
-	EQ  shift 119
-	GT  shift 120
-	GE  shift 121
-	NEQ  shift 122
-	SHR  reduce 67
-	.  reduce 57
+	output_child  goto 167
 
 
-state 136
-	output_shift_exp : shift_exp . SHR rel_exp
-	shift_exp : shift_exp . SHL rel_exp
-	shift_exp : shift_exp . SHR rel_exp
-
-	SHL  shift 123
-	SHR  shift 167
-
-
-state 137
+state 139
 	factor : LPRACE exp RPRACE .  (85)
 
 	.  reduce 85
 
 
-state 138
+state 140
+	term : term MUL factor .  (81)
+
+	.  reduce 81
+
+
+state 141
+	term : term DIV factor .  (82)
+
+	.  reduce 82
+
+
+state 142
+	term : term MOD factor .  (83)
+
+	.  reduce 83
+
+
+state 143
+	term : term . DIV factor
+	term : term . MUL factor
+	simple_exp : simple_exp PLUS term .  (75)
+	term : term . MOD factor
+
+	MUL  shift 106
+	DIV  shift 107
+	MOD  shift 108
+	.  reduce 75
+
+
+state 144
+	term : term . DIV factor
+	simple_exp : simple_exp MINUS term .  (76)
+	term : term . MUL factor
+	term : term . MOD factor
+
+	MUL  shift 106
+	DIV  shift 107
+	MOD  shift 108
+	.  reduce 76
+
+
+state 145
+	shift_exp : shift_exp SHL rel_exp .  (65)
+	rel_exp : rel_exp . EQ simple_exp
+	rel_exp : rel_exp . LE simple_exp
+	rel_exp : rel_exp . NEQ simple_exp
+	rel_exp : rel_exp . GT simple_exp
+	rel_exp : rel_exp . GE simple_exp
+	rel_exp : rel_exp . LT simple_exp
+
+	LT  shift 115
+	LE  shift 116
+	EQ  shift 117
+	GT  shift 118
+	GE  shift 119
+	NEQ  shift 120
+	.  reduce 65
+
+
+state 146
+	rel_exp : rel_exp . EQ simple_exp
+	shift_exp : shift_exp SHR rel_exp .  (66)
+	rel_exp : rel_exp . LE simple_exp
+	rel_exp : rel_exp . NEQ simple_exp
+	rel_exp : rel_exp . GT simple_exp
+	rel_exp : rel_exp . GE simple_exp
+	rel_exp : rel_exp . LT simple_exp
+
+	LT  shift 115
+	LE  shift 116
+	EQ  shift 117
+	GT  shift 118
+	GE  shift 119
+	NEQ  shift 120
+	.  reduce 66
+
+
+state 147
+	simple_exp : simple_exp . DEC
+	simple_exp : simple_exp . MINUS term
+	simple_exp : simple_exp . PLUS term
+	simple_exp : simple_exp . INC
+	rel_exp : rel_exp LT simple_exp .  (69)
+
+	PLUS  shift 109
+	MINUS  shift 110
+	INC  shift 111
+	DEC  shift 112
+	.  reduce 69
+
+
+state 148
+	rel_exp : rel_exp LE simple_exp .  (71)
+	simple_exp : simple_exp . DEC
+	simple_exp : simple_exp . MINUS term
+	simple_exp : simple_exp . PLUS term
+	simple_exp : simple_exp . INC
+
+	PLUS  shift 109
+	MINUS  shift 110
+	INC  shift 111
+	DEC  shift 112
+	.  reduce 71
+
+
+state 149
+	rel_exp : rel_exp EQ simple_exp .  (68)
+	simple_exp : simple_exp . DEC
+	simple_exp : simple_exp . MINUS term
+	simple_exp : simple_exp . PLUS term
+	simple_exp : simple_exp . INC
+
+	PLUS  shift 109
+	MINUS  shift 110
+	INC  shift 111
+	DEC  shift 112
+	.  reduce 68
+
+
+state 150
+	simple_exp : simple_exp . DEC
+	simple_exp : simple_exp . MINUS term
+	simple_exp : simple_exp . PLUS term
+	simple_exp : simple_exp . INC
+	rel_exp : rel_exp GT simple_exp .  (70)
+
+	PLUS  shift 109
+	MINUS  shift 110
+	INC  shift 111
+	DEC  shift 112
+	.  reduce 70
+
+
+state 151
+	simple_exp : simple_exp . DEC
+	simple_exp : simple_exp . MINUS term
+	simple_exp : simple_exp . PLUS term
+	simple_exp : simple_exp . INC
+	rel_exp : rel_exp GE simple_exp .  (72)
+
+	PLUS  shift 109
+	MINUS  shift 110
+	INC  shift 111
+	DEC  shift 112
+	.  reduce 72
+
+
+state 152
+	simple_exp : simple_exp . DEC
+	simple_exp : simple_exp . MINUS term
+	rel_exp : rel_exp NEQ simple_exp .  (73)
+	simple_exp : simple_exp . PLUS term
+	simple_exp : simple_exp . INC
+
+	PLUS  shift 109
+	MINUS  shift 110
+	INC  shift 111
+	DEC  shift 112
+	.  reduce 73
+
+
+state 153
+	and_exp : and_exp AND shift_exp .  (63)
+	shift_exp : shift_exp . SHL rel_exp
+	shift_exp : shift_exp . SHR rel_exp
+
+	SHL  shift 113
+	SHR  shift 114
+	.  reduce 63
+
+
+state 154
+	or_exp : or_exp OR and_exp .  (61)
+	and_exp : and_exp . AND shift_exp
+
+	AND  shift 121
+	.  reduce 61
+
+
+state 155
+	exp : id ASSIGN SQUITO . exp SQUITO
+
+	STRING  shift 49
+	ID  shift 50
+	NUMBER  shift 51
+	CONSTCHAR  shift 52
+	MINUS  shift 59
+	NOT  shift 60
+	LPRACE  shift 62
+
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 70
+	rel_exp  goto 71
+	and_exp  goto 72
+	or_exp  goto 73
+	id  goto 82
+	exp  goto 168
+
+
+state 156
+	exp : id ASSIGN exp .  (58)
+
+	.  reduce 58
+
+
+state 157
 	idlist : idlist COMMA . id
 	idlist : idlist COMMA . exp
 
@@ -1590,234 +1814,26 @@ state 138
 	NOT  shift 60
 	LPRACE  shift 62
 
-	exp  goto 168
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 70
+	rel_exp  goto 71
+	and_exp  goto 72
+	or_exp  goto 73
 	id  goto 169
-	simple_exp  goto 76
-	or_exp  goto 79
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 84
+	exp  goto 170
 
 
-state 139
+state 158
 	var_dec : type_spec idlist SIMICOLON .  (26)
 
 	.  reduce 26
 
 
-state 140
-	exp : id ASSIGN SQUITO . exp SQUITO
-
-	STRING  shift 49
-	ID  shift 50
-	NUMBER  shift 51
-	CONSTCHAR  shift 52
-	MINUS  shift 59
-	NOT  shift 60
-	LPRACE  shift 62
-
-	exp  goto 170
-	id  goto 75
-	simple_exp  goto 76
-	or_exp  goto 79
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 84
-
-
-state 141
-	exp : id ASSIGN exp .  (58)
-
-	.  reduce 58
-
-
-state 142
-	term : term . MUL factor
-	simple_exp : simple_exp PLUS term .  (75)
-	term : term . MOD factor
-	term : term . DIV factor
-
-	MUL  shift 114
-	DIV  shift 115
-	MOD  shift 116
-	.  reduce 75
-
-
-state 143
-	term : term . MUL factor
-	simple_exp : simple_exp MINUS term .  (76)
-	term : term . MOD factor
-	term : term . DIV factor
-
-	MUL  shift 114
-	DIV  shift 115
-	MOD  shift 116
-	.  reduce 76
-
-
-state 144
-	or_exp : or_exp OR and_exp .  (61)
-	and_exp : and_exp . AND shift_exp
-
-	AND  shift 125
-	.  reduce 61
-
-
-state 145
-	term : term MUL factor .  (81)
-
-	.  reduce 81
-
-
-state 146
-	term : term DIV factor .  (82)
-
-	.  reduce 82
-
-
-state 147
-	term : term MOD factor .  (83)
-
-	.  reduce 83
-
-
-state 148
-	rel_exp : rel_exp LT simple_exp .  (69)
-	simple_exp : simple_exp . DEC
-	simple_exp : simple_exp . INC
-	simple_exp : simple_exp . PLUS term
-	simple_exp : simple_exp . MINUS term
-
-	PLUS  shift 109
-	MINUS  shift 110
-	INC  shift 111
-	DEC  shift 112
-	.  reduce 69
-
-
-state 149
-	simple_exp : simple_exp . DEC
-	simple_exp : simple_exp . INC
-	simple_exp : simple_exp . PLUS term
-	rel_exp : rel_exp LE simple_exp .  (71)
-	simple_exp : simple_exp . MINUS term
-
-	PLUS  shift 109
-	MINUS  shift 110
-	INC  shift 111
-	DEC  shift 112
-	.  reduce 71
-
-
-state 150
-	rel_exp : rel_exp EQ simple_exp .  (68)
-	simple_exp : simple_exp . DEC
-	simple_exp : simple_exp . INC
-	simple_exp : simple_exp . PLUS term
-	simple_exp : simple_exp . MINUS term
-
-	PLUS  shift 109
-	MINUS  shift 110
-	INC  shift 111
-	DEC  shift 112
-	.  reduce 68
-
-
-state 151
-	simple_exp : simple_exp . DEC
-	rel_exp : rel_exp GT simple_exp .  (70)
-	simple_exp : simple_exp . INC
-	simple_exp : simple_exp . PLUS term
-	simple_exp : simple_exp . MINUS term
-
-	PLUS  shift 109
-	MINUS  shift 110
-	INC  shift 111
-	DEC  shift 112
-	.  reduce 70
-
-
-state 152
-	simple_exp : simple_exp . DEC
-	simple_exp : simple_exp . INC
-	simple_exp : simple_exp . PLUS term
-	simple_exp : simple_exp . MINUS term
-	rel_exp : rel_exp GE simple_exp .  (72)
-
-	PLUS  shift 109
-	MINUS  shift 110
-	INC  shift 111
-	DEC  shift 112
-	.  reduce 72
-
-
-state 153
-	simple_exp : simple_exp . DEC
-	simple_exp : simple_exp . INC
-	simple_exp : simple_exp . PLUS term
-	rel_exp : rel_exp NEQ simple_exp .  (73)
-	simple_exp : simple_exp . MINUS term
-
-	PLUS  shift 109
-	MINUS  shift 110
-	INC  shift 111
-	DEC  shift 112
-	.  reduce 73
-
-
-state 154
-	shift_exp : shift_exp SHL rel_exp .  (65)
-	rel_exp : rel_exp . EQ simple_exp
-	rel_exp : rel_exp . LT simple_exp
-	rel_exp : rel_exp . GT simple_exp
-	rel_exp : rel_exp . LE simple_exp
-	rel_exp : rel_exp . NEQ simple_exp
-	rel_exp : rel_exp . GE simple_exp
-
-	LT  shift 117
-	LE  shift 118
-	EQ  shift 119
-	GT  shift 120
-	GE  shift 121
-	NEQ  shift 122
-	.  reduce 65
-
-
-state 155
-	rel_exp : rel_exp . EQ simple_exp
-	shift_exp : shift_exp SHR rel_exp .  (66)
-	rel_exp : rel_exp . LT simple_exp
-	rel_exp : rel_exp . GT simple_exp
-	rel_exp : rel_exp . LE simple_exp
-	rel_exp : rel_exp . NEQ simple_exp
-	rel_exp : rel_exp . GE simple_exp
-
-	LT  shift 117
-	LE  shift 118
-	EQ  shift 119
-	GT  shift 120
-	GE  shift 121
-	NEQ  shift 122
-	.  reduce 66
-
-
-state 156
-	shift_exp : shift_exp . SHL rel_exp
-	and_exp : and_exp AND shift_exp .  (63)
-	shift_exp : shift_exp . SHR rel_exp
-
-	SHL  shift 123
-	SHR  shift 124
-	.  reduce 63
-
-
-state 157
-	if_stmt : IF LPRACE exp RPRACE . stmt ELSE stmt
+state 159
 	if_stmt : IF LPRACE exp RPRACE . stmt
+	if_stmt : IF LPRACE exp RPRACE . stmt ELSE stmt
 
 	INT  shift 45
 	CHAR  shift 46
@@ -1841,27 +1857,27 @@ state 157
 
 	comp_stmt  goto 64
 	stmt  goto 171
-	type_spec  goto 67
-	var_dec  goto 68
-	while_stmt  goto 69
-	output_stmt  goto 70
-	exp_stmt  goto 71
-	exp  goto 72
-	if_stmt  goto 73
-	return_stmt  goto 74
-	id  goto 75
-	simple_exp  goto 76
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 70
+	rel_exp  goto 71
+	and_exp  goto 72
+	or_exp  goto 73
+	exp_stmt  goto 74
+	output_stmt  goto 75
+	return_stmt  goto 76
 	input_stmt  goto 77
-	for_stmt  goto 78
-	or_exp  goto 79
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 84
+	while_stmt  goto 78
+	var_dec  goto 79
+	if_stmt  goto 80
+	for_stmt  goto 81
+	id  goto 82
+	exp  goto 83
+	type_spec  goto 84
 
 
-state 158
+state 160
 	for_stmt : FOR LPRACE exp_stmt exp_stmt . exp RPRACE stmt
 	for_stmt : FOR LPRACE exp_stmt exp_stmt . RPRACE stmt
 
@@ -1874,18 +1890,18 @@ state 158
 	LPRACE  shift 62
 	RPRACE  shift 172
 
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 70
+	rel_exp  goto 71
+	and_exp  goto 72
+	or_exp  goto 73
+	id  goto 82
 	exp  goto 173
-	id  goto 75
-	simple_exp  goto 76
-	or_exp  goto 79
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 84
 
 
-state 159
+state 161
 	while_stmt : WHILE LPRACE exp RPRACE . stmt
 
 	INT  shift 45
@@ -1910,120 +1926,43 @@ state 159
 
 	comp_stmt  goto 64
 	stmt  goto 174
-	type_spec  goto 67
-	var_dec  goto 68
-	while_stmt  goto 69
-	output_stmt  goto 70
-	exp_stmt  goto 71
-	exp  goto 72
-	if_stmt  goto 73
-	return_stmt  goto 74
-	id  goto 75
-	simple_exp  goto 76
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 70
+	rel_exp  goto 71
+	and_exp  goto 72
+	or_exp  goto 73
+	exp_stmt  goto 74
+	output_stmt  goto 75
+	return_stmt  goto 76
 	input_stmt  goto 77
-	for_stmt  goto 78
-	or_exp  goto 79
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 84
-
-
-state 160
-	input_child : SHR . exp input_child
-
-	STRING  shift 49
-	ID  shift 50
-	NUMBER  shift 51
-	CONSTCHAR  shift 52
-	MINUS  shift 59
-	NOT  shift 60
-	LPRACE  shift 62
-
-	exp  goto 175
-	id  goto 75
-	simple_exp  goto 76
-	or_exp  goto 79
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 84
-
-
-state 161
-	input_child : SIMICOLON .  (43)
-
-	.  reduce 43
+	while_stmt  goto 78
+	var_dec  goto 79
+	if_stmt  goto 80
+	for_stmt  goto 81
+	id  goto 82
+	exp  goto 83
+	type_spec  goto 84
 
 
 state 162
-	input_stmt : CIN SHR exp input_child .  (41)
-
-	.  reduce 41
-
-
-state 163
-	output_shift_exp : LBRACE shift_exp . SHL rel_exp RBRACE
+	io_shift_exp : LBRACE shift_exp . SHL rel_exp RBRACE
 	shift_exp : shift_exp . SHL rel_exp
 	shift_exp : shift_exp . SHR rel_exp
 
-	SHL  shift 176
-	SHR  shift 124
+	SHL  shift 175
+	SHR  shift 114
+
+
+state 163
+	input_child : SHR io_exp input_child .  (42)
+
+	.  reduce 42
 
 
 state 164
-	output_or_exp : output_or_exp OR . output_and_exp
-
-	STRING  shift 49
-	ID  shift 50
-	NUMBER  shift 51
-	CONSTCHAR  shift 52
-	MINUS  shift 59
-	NOT  shift 60
-	LBRACE  shift 130
-	LPRACE  shift 62
-
-	id  goto 97
-	simple_exp  goto 76
-	output_and_exp  goto 177
-	term  goto 80
-	output_shift_exp  goto 134
-	factor  goto 81
-	rel_exp  goto 135
-	shift_exp  goto 136
-
-
-state 165
-	output_child : SHL output_exp output_child .  (46)
-
-	.  reduce 46
-
-
-state 166
-	output_and_exp : output_and_exp AND . output_shift_exp
-
-	STRING  shift 49
-	ID  shift 50
-	NUMBER  shift 51
-	CONSTCHAR  shift 52
-	MINUS  shift 59
-	NOT  shift 60
-	LBRACE  shift 130
-	LPRACE  shift 62
-
-	id  goto 97
-	simple_exp  goto 76
-	term  goto 80
-	output_shift_exp  goto 178
-	factor  goto 81
-	rel_exp  goto 135
-	shift_exp  goto 136
-
-
-state 167
-	output_shift_exp : shift_exp SHR . rel_exp
+	io_shift_exp : shift_exp SHR . rel_exp
 	shift_exp : shift_exp SHR . rel_exp
 
 	STRING  shift 49
@@ -2034,45 +1973,94 @@ state 167
 	NOT  shift 60
 	LPRACE  shift 62
 
-	id  goto 97
-	simple_exp  goto 76
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 179
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	rel_exp  goto 176
+	id  goto 100
+
+
+state 165
+	io_or_exp : io_or_exp OR . io_and_exp
+
+	STRING  shift 49
+	ID  shift 50
+	NUMBER  shift 51
+	CONSTCHAR  shift 52
+	MINUS  shift 59
+	NOT  shift 60
+	LBRACE  shift 131
+	LPRACE  shift 62
+
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	io_shift_exp  goto 133
+	shift_exp  goto 134
+	rel_exp  goto 135
+	io_and_exp  goto 177
+	id  goto 100
+
+
+state 166
+	io_and_exp : io_and_exp AND . io_shift_exp
+
+	STRING  shift 49
+	ID  shift 50
+	NUMBER  shift 51
+	CONSTCHAR  shift 52
+	MINUS  shift 59
+	NOT  shift 60
+	LBRACE  shift 131
+	LPRACE  shift 62
+
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	io_shift_exp  goto 178
+	shift_exp  goto 134
+	rel_exp  goto 135
+	id  goto 100
+
+
+state 167
+	output_child : SHL io_exp output_child .  (46)
+
+	.  reduce 46
 
 
 state 168
-	idlist : idlist COMMA exp .  (32)
+	exp : id ASSIGN SQUITO exp . SQUITO
 
-	.  reduce 32
+	SQUITO  shift 179
 
 
 169: reduce-reduce conflict (reduce 31, reduce 86) on COMMA
 169: reduce-reduce conflict (reduce 31, reduce 86) on SIMICOLON
 state 169
 	idlist : idlist COMMA id .  (31)
-	exp : id . ASSIGN SQUITO exp SQUITO
 	exp : id . ASSIGN exp
+	exp : id . ASSIGN SQUITO exp SQUITO
 	factor : id .  (86)
 
-	ASSIGN  shift 108
+	ASSIGN  shift 123
 	COMMA  reduce 31
 	SIMICOLON  reduce 31
 	.  reduce 86
 
 
 state 170
-	exp : id ASSIGN SQUITO exp . SQUITO
+	idlist : idlist COMMA exp .  (32)
 
-	SQUITO  shift 180
+	.  reduce 32
 
 
-171: shift-reduce conflict (shift 181, reduce 37) on ELSE
+171: shift-reduce conflict (shift 180, reduce 37) on ELSE
 state 171
-	if_stmt : IF LPRACE exp RPRACE stmt . ELSE stmt
 	if_stmt : IF LPRACE exp RPRACE stmt .  (37)
+	if_stmt : IF LPRACE exp RPRACE stmt . ELSE stmt
 
-	ELSE  shift 181
+	ELSE  shift 180
 	.  reduce 37
 
 
@@ -2100,31 +2088,31 @@ state 172
 	SIMICOLON  shift 63
 
 	comp_stmt  goto 64
-	stmt  goto 182
-	type_spec  goto 67
-	var_dec  goto 68
-	while_stmt  goto 69
-	output_stmt  goto 70
-	exp_stmt  goto 71
-	exp  goto 72
-	if_stmt  goto 73
-	return_stmt  goto 74
-	id  goto 75
-	simple_exp  goto 76
+	stmt  goto 181
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 70
+	rel_exp  goto 71
+	and_exp  goto 72
+	or_exp  goto 73
+	exp_stmt  goto 74
+	output_stmt  goto 75
+	return_stmt  goto 76
 	input_stmt  goto 77
-	for_stmt  goto 78
-	or_exp  goto 79
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 84
+	while_stmt  goto 78
+	var_dec  goto 79
+	if_stmt  goto 80
+	for_stmt  goto 81
+	id  goto 82
+	exp  goto 83
+	type_spec  goto 84
 
 
 state 173
 	for_stmt : FOR LPRACE exp_stmt exp_stmt exp . RPRACE stmt
 
-	RPRACE  shift 183
+	RPRACE  shift 182
 
 
 state 174
@@ -2134,16 +2122,7 @@ state 174
 
 
 state 175
-	input_child : SHR exp . input_child
-
-	SHR  shift 160
-	SIMICOLON  shift 161
-
-	input_child  goto 184
-
-
-state 176
-	output_shift_exp : LBRACE shift_exp SHL . rel_exp RBRACE
+	io_shift_exp : LBRACE shift_exp SHL . rel_exp RBRACE
 	shift_exp : shift_exp SHL . rel_exp
 
 	STRING  shift 49
@@ -2154,55 +2133,55 @@ state 176
 	NOT  shift 60
 	LPRACE  shift 62
 
-	id  goto 97
-	simple_exp  goto 76
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 185
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	rel_exp  goto 183
+	id  goto 100
+
+
+176: reduce-reduce conflict (reduce 56, reduce 66) on SHL
+176: reduce-reduce conflict (reduce 56, reduce 66) on SHR
+state 176
+	io_shift_exp : shift_exp SHR rel_exp .  (56)
+	rel_exp : rel_exp . EQ simple_exp
+	shift_exp : shift_exp SHR rel_exp .  (66)
+	rel_exp : rel_exp . LE simple_exp
+	rel_exp : rel_exp . NEQ simple_exp
+	rel_exp : rel_exp . GT simple_exp
+	rel_exp : rel_exp . GE simple_exp
+	rel_exp : rel_exp . LT simple_exp
+
+	LT  shift 115
+	LE  shift 116
+	EQ  shift 117
+	GT  shift 118
+	GE  shift 119
+	NEQ  shift 120
+	.  reduce 56
 
 
 state 177
-	output_or_exp : output_or_exp OR output_and_exp .  (51)
-	output_and_exp : output_and_exp . AND output_shift_exp
+	io_or_exp : io_or_exp OR io_and_exp .  (51)
+	io_and_exp : io_and_exp . AND io_shift_exp
 
 	AND  shift 166
 	.  reduce 51
 
 
 state 178
-	output_and_exp : output_and_exp AND output_shift_exp .  (53)
+	io_and_exp : io_and_exp AND io_shift_exp .  (53)
 
 	.  reduce 53
 
 
-179: reduce-reduce conflict (reduce 56, reduce 66) on SHL
 state 179
-	output_shift_exp : shift_exp SHR rel_exp .  (56)
-	rel_exp : rel_exp . EQ simple_exp
-	shift_exp : shift_exp SHR rel_exp .  (66)
-	rel_exp : rel_exp . LT simple_exp
-	rel_exp : rel_exp . GT simple_exp
-	rel_exp : rel_exp . LE simple_exp
-	rel_exp : rel_exp . NEQ simple_exp
-	rel_exp : rel_exp . GE simple_exp
-
-	LT  shift 117
-	LE  shift 118
-	EQ  shift 119
-	GT  shift 120
-	GE  shift 121
-	NEQ  shift 122
-	SHR  reduce 66
-	.  reduce 56
-
-
-state 180
 	exp : id ASSIGN SQUITO exp SQUITO .  (59)
 
 	.  reduce 59
 
 
-state 181
+state 180
 	if_stmt : IF LPRACE exp RPRACE stmt ELSE . stmt
 
 	INT  shift 45
@@ -2226,34 +2205,34 @@ state 181
 	SIMICOLON  shift 63
 
 	comp_stmt  goto 64
-	stmt  goto 186
-	type_spec  goto 67
-	var_dec  goto 68
-	while_stmt  goto 69
-	output_stmt  goto 70
-	exp_stmt  goto 71
-	exp  goto 72
-	if_stmt  goto 73
-	return_stmt  goto 74
-	id  goto 75
-	simple_exp  goto 76
+	stmt  goto 184
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 70
+	rel_exp  goto 71
+	and_exp  goto 72
+	or_exp  goto 73
+	exp_stmt  goto 74
+	output_stmt  goto 75
+	return_stmt  goto 76
 	input_stmt  goto 77
-	for_stmt  goto 78
-	or_exp  goto 79
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 84
+	while_stmt  goto 78
+	var_dec  goto 79
+	if_stmt  goto 80
+	for_stmt  goto 81
+	id  goto 82
+	exp  goto 83
+	type_spec  goto 84
 
 
-state 182
+state 181
 	for_stmt : FOR LPRACE exp_stmt exp_stmt RPRACE stmt .  (39)
 
 	.  reduce 39
 
 
-state 183
+state 182
 	for_stmt : FOR LPRACE exp_stmt exp_stmt exp RPRACE . stmt
 
 	INT  shift 45
@@ -2277,67 +2256,61 @@ state 183
 	SIMICOLON  shift 63
 
 	comp_stmt  goto 64
-	stmt  goto 187
-	type_spec  goto 67
-	var_dec  goto 68
-	while_stmt  goto 69
-	output_stmt  goto 70
-	exp_stmt  goto 71
-	exp  goto 72
-	if_stmt  goto 73
-	return_stmt  goto 74
-	id  goto 75
-	simple_exp  goto 76
+	stmt  goto 185
+	term  goto 67
+	factor  goto 68
+	simple_exp  goto 69
+	shift_exp  goto 70
+	rel_exp  goto 71
+	and_exp  goto 72
+	or_exp  goto 73
+	exp_stmt  goto 74
+	output_stmt  goto 75
+	return_stmt  goto 76
 	input_stmt  goto 77
-	for_stmt  goto 78
-	or_exp  goto 79
-	term  goto 80
-	factor  goto 81
-	rel_exp  goto 82
-	shift_exp  goto 83
-	and_exp  goto 84
+	while_stmt  goto 78
+	var_dec  goto 79
+	if_stmt  goto 80
+	for_stmt  goto 81
+	id  goto 82
+	exp  goto 83
+	type_spec  goto 84
 
 
-state 184
-	input_child : SHR exp input_child .  (42)
-
-	.  reduce 42
-
-
-state 185
-	output_shift_exp : LBRACE shift_exp SHL rel_exp . RBRACE
+state 183
+	io_shift_exp : LBRACE shift_exp SHL rel_exp . RBRACE
 	shift_exp : shift_exp SHL rel_exp .  (65)
 	rel_exp : rel_exp . EQ simple_exp
-	rel_exp : rel_exp . LT simple_exp
-	rel_exp : rel_exp . GT simple_exp
 	rel_exp : rel_exp . LE simple_exp
 	rel_exp : rel_exp . NEQ simple_exp
+	rel_exp : rel_exp . GT simple_exp
 	rel_exp : rel_exp . GE simple_exp
+	rel_exp : rel_exp . LT simple_exp
 
-	LT  shift 117
-	LE  shift 118
-	EQ  shift 119
-	GT  shift 120
-	GE  shift 121
-	NEQ  shift 122
-	RBRACE  shift 188
+	LT  shift 115
+	LE  shift 116
+	EQ  shift 117
+	GT  shift 118
+	GE  shift 119
+	NEQ  shift 120
+	RBRACE  shift 186
 	.  reduce 65
 
 
-state 186
+state 184
 	if_stmt : IF LPRACE exp RPRACE stmt ELSE stmt .  (36)
 
 	.  reduce 36
 
 
-state 187
+state 185
 	for_stmt : FOR LPRACE exp_stmt exp_stmt exp RPRACE stmt .  (38)
 
 	.  reduce 38
 
 
-state 188
-	output_shift_exp : LBRACE shift_exp SHL rel_exp RBRACE .  (55)
+state 186
+	io_shift_exp : LBRACE shift_exp SHL rel_exp RBRACE .  (55)
 
 	.  reduce 55
 
@@ -2346,18 +2319,17 @@ state 188
 # Summary
 ##############################################################################
 
-State 83 contains 1 shift-reduce conflict(s)
-State 98 contains 1 shift-reduce conflict(s)
-State 99 contains 2 shift-reduce conflict(s)
-State 106 contains 2 reduce-reduce conflict(s)
-State 135 contains 1 reduce-reduce conflict(s)
+State 99 contains 1 shift-reduce conflict(s)
+State 101 contains 2 shift-reduce conflict(s)
+State 126 contains 2 reduce-reduce conflict(s)
+State 135 contains 2 reduce-reduce conflict(s)
 State 169 contains 2 reduce-reduce conflict(s)
 State 171 contains 1 shift-reduce conflict(s)
-State 179 contains 1 reduce-reduce conflict(s)
+State 176 contains 2 reduce-reduce conflict(s)
 
 
 46 token(s), 30 nonterminal(s)
-91 grammar rule(s), 189 state(s)
+91 grammar rule(s), 187 state(s)
 
 
 ##############################################################################

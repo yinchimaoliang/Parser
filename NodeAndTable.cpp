@@ -200,12 +200,12 @@ void NodeTable::shownode(struct TreeNode * p)
     {
      fout<<p->child[i]->seq<<" ";
     }
- 
-  if (i+1)//Êä³ö¡°ÐÖµÜ¡±ºÅ
-	{
+  //if (i+1)//Êä³ö¡°ÐÖµÜ¡±ºÅ
+	//{
 		for (TreeNode *child = p->child[i]->sibling; child; child = child->sibling)
 			fout << child->seq << " ";
-	}
+	//}
+	
   }
   fout<<endl;
 }

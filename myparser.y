@@ -290,14 +290,14 @@ while_stmt      :WHILE LPRACE exp RPRACE stmt
                    $$=my.createnode(STMT,WHILE_STMT,0,Notype,$3,$5,NULL,NULL);
                  }
                  ;
-input_stmt      :CIN SHR exp input_child
+input_stmt      :CIN input_child
                  {
-                   $$=my.createnode(STMT,INPUT_STMT,0,Notype,$3,$4,NULL,NULL);
+                   $$=my.createnode(STMT,INPUT_STMT,0,Notype,$2,NULL,NULL,NULL);
                  }
                  ;
-input_child      :SHR exp input_child
+input_child      :SHR io_exp input_child
                  {
-                   $$=my.createnode(STMT,INPUT_STMT,0,Notype,$3,$4,NULL,NULL);
+                   $$=my.createnode(STMT,INPUT_STMT,0,Notype,$2,$3,NULL,NULL);
                  }
                  |SIMICOLON
                  {
@@ -314,7 +314,7 @@ return_stmt      :RETURN simple_exp
                    $$=my.createnode(STMT,RETURN_STMT,0,Notype,$2,NULL,NULL,NULL);
                   }
                   ;
-output_child      :SHL output_exp output_child
+output_child      :SHL io_exp output_child
                   {
                    $$=my.createnode(STMT,OUTPUT_STMT,0,Notype,$2,$3,NULL,NULL);
                   }
@@ -332,30 +332,30 @@ exp_stmt         :exp SIMICOLON
                     $$=NULL;
                   }
                   ;
-output_exp		 :output_or_exp
+io_exp		 :io_or_exp
                   {
                    $$=$1;
                   }
 				  ;
-output_or_exp	 :output_or_exp OR output_and_exp
+io_or_exp	 :io_or_exp OR io_and_exp
                   {
                     $$=my.createnode(EXPR,OP_EXPR,OR,Notype,$1,$3,NULL,NULL); 
                   }
-                  |output_and_exp
+                  |io_and_exp
                   {
                     $$=$1;
                   }
                   ;
-output_and_exp	 :output_and_exp AND output_shift_exp
+io_and_exp	 :io_and_exp AND io_shift_exp
                   {
                     $$=my.createnode(EXPR,OP_EXPR,AND,Notype,$1,$3,NULL,NULL); 
                   }
-                  |output_shift_exp
+                  |io_shift_exp
                   {
                    $$=$1;
                   }
                   ;
-output_shift_exp :LBRACE shift_exp SHL rel_exp RBRACE
+io_shift_exp :LBRACE shift_exp SHL rel_exp RBRACE
                    {
                      $$=my.createnode(EXPR,OP_EXPR,SHL,Notype,$2,$4,NULL,NULL); 
                    }
